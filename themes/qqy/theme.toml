@@ -1,0 +1,10 @@
+name = "QY"
+license = "MIT"
+licenselink = "https://opensource.org/licenses/MIT"
+description = "A clean, columned theme inspired by qqy.pw"
+homepage = "https://example.org/"
+min_version = "0.111.0"
+
+[author]
+  name = "Codex"
+  homepage = "https://example.org/"

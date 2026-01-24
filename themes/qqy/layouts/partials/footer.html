@@ -1,0 +1,15 @@
+<footer class="footer">
+  <div class="footer-inner">
+    <p>
+      <a href="{{ "/categories/" | relURL }}">Categories</a><em>·</em>
+      <a href="{{ "/tags/" | relURL }}">Tags</a><em>·</em>
+      <a href="{{ "/archives/" | relURL }}">Archives</a><em>·</em>
+      <a href="{{ "/links/" | relURL }}">Links</a><em>·</em>
+      <a href="{{ "/about/" | relURL }}">About</a><em>·</em>
+      <span>&copy; {{ now.Format "2006" }} {{ .Site.Params.siteTitle }}</span>
+    </p>
+  </div>
+</footer>
+<div class="fixed-btn">
+  <a class="btn-gotop" href="#top" aria-label="Go to top">↑</a>
+</div>

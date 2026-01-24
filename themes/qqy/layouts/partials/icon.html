@@ -1,0 +1,22 @@
+{{- $name := . -}}
+{{- if eq $name "home" -}}
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4.5v-6.5h-5V21H5a1 1 0 0 1-1-1z"/></svg>
+{{- else if eq $name "categories" -}}
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h8v5H3zm10 0h8v5h-8zM3 13h8v5H3zm10 0h8v5h-8z"/></svg>
+{{- else if eq $name "tags" -}}
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 8a2 2 0 0 1 2-2h6.2a2 2 0 0 1 1.4.6l7.2 7.2a2 2 0 0 1 0 2.8l-3.6 3.6a2 2 0 0 1-2.8 0l-7.2-7.2a2 2 0 0 1-.6-1.4V8z"/><circle cx="8" cy="9" r="1.3"/></svg>
+{{- else if eq $name "archives" -}}
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v4H4z"/><path d="M6 9h12v11H6z"/><path d="M9 12h6v2H9z"/></svg>
+{{- else if eq $name "links" -}}
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 12a3.5 3.5 0 0 1 3.5-3.5h3v2h-3a1.5 1.5 0 1 0 0 3h3v2h-3A3.5 3.5 0 0 1 7.5 12z"/><path d="M9.5 14.5h3a3.5 3.5 0 0 0 0-7h-3v2h3a1.5 1.5 0 0 1 0 3h-3z"/></svg>
+{{- else if eq $name "about" -}}
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z"/><path d="M12 10.2a1.1 1.1 0 1 0 0-2.2 1.1 1.1 0 0 0 0 2.2zM10.8 12h2.4v6h-2.4z"/></svg>
+{{- else if eq $name "search" -}}
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15.5 14h-.8l-.3-.3a6 6 0 1 0-.7.7l.3.3v.8L20 20.5 21.5 19zM10 15a5 5 0 1 1 0-10 5 5 0 0 1 0 10z"/></svg>
+{{- else if eq $name "sun" -}}
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 12a6 6 0 1 0 12 0 6 6 0 0 0-12 0z"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+{{- else if eq $name "moon" -}}
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A7.5 7.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+{{- else -}}
+<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"/></svg>
+{{- end -}}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode | default "en" }}" class="no-js">
+  <head>
+    {{ partial "head.html" . }}
+  </head>
+  <body class="{{ .Kind }}">
+    <a id="top"></a>
+    {{ partial "nav.html" . }}
+    <div id="wrapper" class="clearfix">
+      {{ partial "cover.html" . }}
+      <div id="body">
+        {{ partial "page-title.html" . }}
+        <div class="main">
+          <div class="main-inner">
+            {{ block "main" . }}{{ end }}
+          </div>
+        </div>
+      </div>
+      {{ partial "footer.html" . }}
+    </div>
+  </body>
+</html>

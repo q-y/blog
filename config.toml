@@ -1,0 +1,49 @@
+baseURL = "https://example.org/"
+languageCode = "en-us"
+title = "QY"
+theme = "qqy"
+paginate = 6
+enableRobotsTXT = true
+
+[taxonomies]
+  tag = "tags"
+  category = "categories"
+
+[params]
+  siteName = "QY"
+  siteTitle = "QY.PW"
+  siteSubtitle = "QQ has Power"
+  author = "QY"
+  coverImage = "img/cover.svg"
+
+[menu]
+  [[menu.main]]
+    name = "Home"
+    url = "/"
+    weight = 1
+    identifier = "home"
+  [[menu.main]]
+    name = "Categories"
+    url = "/categories/"
+    weight = 2
+    identifier = "categories"
+  [[menu.main]]
+    name = "Tags"
+    url = "/tags/"
+    weight = 3
+    identifier = "tags"
+  [[menu.main]]
+    name = "Archives"
+    url = "/archives/"
+    weight = 4
+    identifier = "archives"
+  [[menu.main]]
+    name = "Links"
+    url = "/links/"
+    weight = 5
+    identifier = "links"
+  [[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 6
+    identifier = "about"

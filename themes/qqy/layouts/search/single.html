@@ -1,0 +1,20 @@
+{{ define "main" }}
+  <div class="section-head">
+    <h1>{{ .Title }}</h1>
+    <p>Search is a visual placeholder. Use your browser search or integrate a search index.</p>
+  </div>
+  <div class="post">
+    <div class="post-desc">
+      Query: <strong id="search-query">(none)</strong>
+    </div>
+  </div>
+  <script>
+    (function(){
+      var params = new URLSearchParams(window.location.search);
+      var q = params.get('q');
+      if(q){
+        document.getElementById('search-query').textContent = q;
+      }
+    })();
+  </script>
+{{ end }}

@@ -1,3 +1,7 @@
-This is the Source of my blog.
+This is the source for my Hugo blog.
 
-Powered by Hugo.
+Theme: `themes/qqy`
+
+Quick start:
+- `hugo server -D`
+- `hugo`

@@ -1,0 +1,13 @@
+<div class="page-title">
+  <ul>
+    <li class="{{ if .IsHome }}active{{ end }}"><a href="{{ "/" | relURL }}">Latest</a></li>
+    <li><a href="#" class="explore-link" data-action="explore">Explore</a></li>
+    <li class="page-search">
+      <form id="search" method="get" action="{{ "/search/" | relURL }}" role="search">
+        <label for="q" class="sr-only">Search</label>
+        <input type="text" name="q" id="q" class="text" placeholder="Search" />
+        <button type="submit" class="submit" title="Search">{{ partial "icon.html" "search" }}</button>
+      </form>
+    </li>
+  </ul>
+</div>

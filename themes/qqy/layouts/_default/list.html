@@ -1,0 +1,41 @@
+{{ define "main" }}
+  {{ if not .IsHome }}
+    <div class="section-head">
+      <h1>{{ .Title }}</h1>
+      {{ with .Description }}<p>{{ . }}</p>{{ end }}
+    </div>
+  {{ end }}
+  {{ $paginator := .Paginate (where .Pages "Type" "ne" "page") }}
+  {{ range $paginator.Pages }}
+    <article class="post">
+      <div class="post-header">
+        <a class="post-title" href="{{ .RelPermalink }}" title="{{ .Title }}">{{ .Title }}</a>
+        <div class="post-meta">
+          <span class="meta-item">By {{ default $.Site.Params.author .Params.author }}</span>
+          <em></em>
+          <span class="meta-item">{{ .Date.Format "2006-01-02" }}</span>
+          <em></em>
+          <span class="meta-item">{{ .ReadingTime }} min read</span>
+        </div>
+      </div>
+      <div class="post-desc">
+        {{ .Summary }}
+      </div>
+    </article>
+  {{ end }}
+  {{ if gt $paginator.TotalPages 1 }}
+    <nav class="page-navigator">
+      <ul>
+        {{ if $paginator.HasPrev }}
+          <li><a href="{{ $paginator.Prev.URL }}">Prev</a></li>
+        {{ end }}
+        {{ range $paginator.Pagers }}
+          <li class="{{ if eq . $paginator }}current{{ end }}"><a href="{{ .URL }}">{{ .PageNumber }}</a></li>
+        {{ end }}
+        {{ if $paginator.HasNext }}
+          <li><a href="{{ $paginator.Next.URL }}">Next</a></li>
+        {{ end }}
+      </ul>
+    </nav>
+  {{ end }}
+{{ end }}
