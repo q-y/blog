@@ -97,6 +97,11 @@ a {
   pointer-events: none;
 }
 
+#nav .nav-menu a .title {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
 #nav .nav-menu a.site-name {
   display: none;
   justify-content: center;
@@ -106,30 +111,32 @@ a {
 }
 
 .nav-user {
-  position: fixed;
-  top: 10px;
-  right: 16px;
   display: flex;
-  gap: 8px;
-  z-index: 1400;
+  gap: 10px;
 }
 
 .nav-user button {
   border: 1px solid var(--border);
   background: #fff;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: var(--shadow);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.nav-user button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
 }
 
 .nav-user svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   fill: #666;
 }
 
@@ -248,6 +255,12 @@ a {
 
 .page-title li.page-search {
   margin-left: auto;
+}
+
+.page-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 #search {
@@ -563,6 +576,13 @@ body.night-mode .post-tags a {
   #search {
     width: 160px;
   }
+  .page-actions {
+    gap: 8px;
+  }
+  .nav-user button {
+    width: 36px;
+    height: 36px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -595,13 +615,13 @@ body.night-mode .post-tags a {
   }
   .page-title {
     left: 0;
-    top: 46px;
+    top: 50px;
   }
   .main {
     padding-left: 10px;
   }
-  .nav-user {
-    top: 52px;
+  .page-actions {
+    gap: 6px;
   }
 }
 
