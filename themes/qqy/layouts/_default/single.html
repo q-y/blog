@@ -3,11 +3,11 @@
     <div class="post-header">
       <h1 class="post-title">{{ .Title }}</h1>
       <div class="post-meta">
-        <span class="meta-item">By {{ default $.Site.Params.author .Params.author }}</span>
+        <span class="meta-item">作者 {{ default $.Site.Params.author .Params.author }}</span>
         <em></em>
         <span class="meta-item">{{ .Date.Format "2006-01-02" }}</span>
         <em></em>
-        <span class="meta-item">{{ .ReadingTime }} min read</span>
+        <span class="meta-item">{{ .ReadingTime }} 分钟阅读</span>
       </div>
     </div>
     <div class="post-content">

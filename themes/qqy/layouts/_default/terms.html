@@ -4,7 +4,7 @@
   </div>
   <ul class="tag-list">
     {{ range .Data.Terms.Alphabetical }}
-      <li><a href="{{ .Page.RelPermalink }}">{{ .Page.Title }} ({{ .Count }})</a></li>
+      <li><a href="{{ .Page.RelPermalink }}">{{ .Page.Title }}（{{ .Count }} 篇）</a></li>
     {{ end }}
   </ul>
 {{ end }}
