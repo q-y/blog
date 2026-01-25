@@ -1,7 +1,6 @@
 (function () {
   var body = document.body;
   var btnMode = document.querySelector('.btn-read-mode');
-  var btnSearch = document.querySelector('.btn-search');
   var searchForm = document.getElementById('search');
   var exploreLink = document.querySelector('.explore-link');
   var goTop = document.querySelector('.fixed-btn');
@@ -30,14 +29,11 @@
     });
   }
 
-  if (btnSearch && searchForm) {
-    btnSearch.addEventListener('click', function () {
-      searchForm.classList.toggle('active');
-      var input = searchForm.querySelector('input');
-      if (input) {
-        input.focus();
-      }
-    });
+  if (searchForm) {
+    var input = searchForm.querySelector('input');
+    if (input) {
+      input.setAttribute('inputmode', 'search');
+    }
   }
 
   if (exploreLink) {
