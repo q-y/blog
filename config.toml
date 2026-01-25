@@ -1,5 +1,5 @@
 baseURL = "https://example.org/"
-languageCode = "en-us"
+languageCode = "zh-cn"
 title = "QY"
 theme = "qqy"
 paginate = 6
@@ -12,38 +12,38 @@ enableRobotsTXT = true
 [params]
   siteName = "QY"
   siteTitle = "QY.PW"
-  siteSubtitle = "QQ has Power"
+  siteSubtitle = "记录 · 分享 · 思考"
   author = "QY"
   coverImage = "img/cover.svg"
 
 [menu]
   [[menu.main]]
-    name = "Home"
+    name = "首页"
     url = "/"
     weight = 1
     identifier = "home"
   [[menu.main]]
-    name = "Categories"
+    name = "分类"
     url = "/categories/"
     weight = 2
     identifier = "categories"
   [[menu.main]]
-    name = "Tags"
+    name = "标签"
     url = "/tags/"
     weight = 3
     identifier = "tags"
   [[menu.main]]
-    name = "Archives"
+    name = "归档"
     url = "/archives/"
     weight = 4
     identifier = "archives"
   [[menu.main]]
-    name = "Links"
+    name = "友链"
     url = "/links/"
     weight = 5
     identifier = "links"
   [[menu.main]]
-    name = "About"
+    name = "关于"
     url = "/about/"
     weight = 6
     identifier = "about"
