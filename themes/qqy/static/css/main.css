@@ -10,7 +10,7 @@
   --border: #e6e6e6;
   --soft: #efefef;
   --shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
-  --nav-width: 200px;
+  --nav-width: 190px;
   --cover-width: 32%;
   --font-sans: "Karla", "Hiragino Sans GB", "Microsoft YaHei", "PingFang SC", "Helvetica Neue", Arial, sans-serif;
   --font-serif: "Newsreader", "Noto Serif", "Georgia", "Times New Roman", serif;
@@ -58,7 +58,7 @@ a {
   z-index: 2000;
   display: flex;
   align-items: flex-start;
-  padding-top: 32px;
+  padding-top: 24px;
 }
 
 #nav .nav-menu {
@@ -69,8 +69,8 @@ a {
   display: flex;
   align-items: center;
   gap: 10px;
-  height: 52px;
-  padding: 0 22px;
+  height: 48px;
+  padding: 0 18px;
   color: #ffffff;
   transition: background 0.2s ease, color 0.2s ease;
 }
@@ -541,7 +541,7 @@ body.night-mode .post-tags a {
 
 @media (max-width: 1588px) {
   :root {
-    --nav-width: 76px;
+    --nav-width: 70px;
   }
   #nav .nav-menu a.site-name {
     display: flex;
