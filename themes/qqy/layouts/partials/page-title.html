@@ -1,12 +1,25 @@
 <div class="page-title">
   <ul>
     <li class="{{ if .IsHome }}active{{ end }}"><a href="{{ "/" | relURL }}">最新</a></li>
-    <li><a href="#" class="explore-link" data-action="explore">随便看看</a></li>
+    {{ if eq .Kind "term" }}
+      <li class="active"><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{ end }}
+    {{ if eq .Type "search" }}
+      <li class="active search-query"><a id="search-query-title" href="{{ "/search/" | relURL }}"></a></li>
+    {{ end }}
+    {{ if .IsPage }}
+      {{ $cats := .GetTerms "categories" }}
+      {{ if gt (len $cats) 0 }}
+        {{ $cat := index $cats 0 }}
+        <li class="active"><a href="{{ $cat.RelPermalink }}">{{ $cat.Title }}</a></li>
+      {{ end }}
+    {{ end }}
+    <li><a href="#" class="explore-link" data-action="explore">探索</a></li>
     <li class="page-search">
       <form id="search" method="get" action="{{ "/search/" | relURL }}" role="search">
-        <label for="q" class="sr-only">搜索</label>
-        <input type="text" name="q" id="q" class="text" placeholder="搜索文章" />
-        <button type="submit" class="submit" title="搜索">{{ partial "icon.html" "search" }}</button>
+        <label for="q" class="sr-only">Search</label>
+        <input type="text" name="q" id="q" class="text" placeholder="输入关键字搜索" />
+        <button type="submit" class="submit" title="Search"><i class="fa fa-search"></i></button>
       </form>
     </li>
   </ul>

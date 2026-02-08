@@ -1,0 +1,9 @@
+{{- $lang := .Site.LanguageCode | default "" -}}
+{{- if hasPrefix $lang "zh" -}}
+  {{- $cpm := .Site.Params.readingCharsPerMin | default 400 -}}
+  {{- $chars := countrunes .Plain -}}
+  {{- $mins := div (add $chars (sub $cpm 1)) $cpm -}}
+  {{- if lt $mins 1 -}}1{{- else -}}{{- $mins -}}{{- end -}}
+{{- else -}}
+  {{- .ReadingTime -}}
+{{- end -}}

@@ -1,7 +1,21 @@
 <div id="cover">
-  <div class="cover-img" style="background-image:url('{{ .Site.Params.coverImage | relURL }}')"></div>
+  {{ $headers := slice }}
+  {{ range seq 1 31 }}
+    {{ $headers = $headers | append ((printf "img/header_%d.jpg" .) | relURL) }}
+  {{ end }}
+  <div class="cover-img" data-images="{{ delimit $headers "," }}"></div>
+  <noscript>
+    <style>
+      #cover .cover-img { background-image: url('{{ "img/header_1.jpg" | relURL }}'); }
+    </style>
+  </noscript>
   <div class="cover-info">
-    <h3>{{ .Site.Params.siteTitle }}</h3>
-    <p>{{ .Site.Params.siteSubtitle }}</p>
+    {{ if .Site.Params.avatarUrl }}
+      <img class="avatar" width="72" src="{{ .Site.Params.avatarUrl | relURL }}" alt="" />
+    {{ else }}
+      <h3>{{ .Site.Params.siteTitle }}</h3>
+    {{ end }}
+    {{ $defaultDesc := slice "Qian Yang's Personal Website" "QQ 有 PoWer" "Personal Website of Qian Yang" }}
+    <p>{{ .Site.Params.siteSubtitle | default (index (shuffle $defaultDesc) 0) }}</p>
   </div>
 </div>

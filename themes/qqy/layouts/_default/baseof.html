@@ -3,7 +3,7 @@
   <head>
     {{ partial "head.html" . }}
   </head>
-  <body class="{{ .Kind }}">
+  <body class="{{ .Kind }}{{ if .IsPage }} single{{ end }}">
     <a id="top"></a>
     {{ partial "nav.html" . }}
     <div id="wrapper" class="clearfix">

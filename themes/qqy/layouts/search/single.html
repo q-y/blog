@@ -1,20 +1,91 @@
 {{ define "main" }}
-  <div class="section-head">
-    <h1>{{ .Title }}</h1>
-    <p>搜索页面为占位提示，可使用浏览器内置搜索或接入站内搜索索引。</p>
-  </div>
-  <div class="post">
-    <div class="post-desc">
-      关键词：<strong id="search-query">（无）</strong>
-    </div>
-  </div>
+  <div id="search-results"></div>
   <script>
     (function(){
       var params = new URLSearchParams(window.location.search);
-      var q = params.get('q');
-      if(q){
-        document.getElementById('search-query').textContent = q;
+      var q = (params.get('q') || '').trim();
+      var body = document.body;
+      var queryTitle = document.getElementById('search-query-title');
+      var resultsEl = document.getElementById('search-results');
+
+      if (queryTitle) {
+        if (q) {
+          queryTitle.textContent = q;
+          queryTitle.setAttribute('href', '{{ "/search/" | relURL }}?q=' + encodeURIComponent(q));
+          body.classList.add('search-has-query');
+        } else {
+          queryTitle.textContent = '';
+        }
       }
+
+      if (!resultsEl) {
+        return;
+      }
+      if (!q) {
+        resultsEl.innerHTML = '<article class="post"><div class="post-desc">Enter a keyword to search.</div></article>';
+        return;
+      }
+
+      function escapeHtml(value) {
+        return String(value || '')
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      fetch('{{ .RelPermalink }}index.json')
+        .then(function (res) { return res.json(); })
+        .then(function (pages) {
+          var tokens = q.toLowerCase().split(/\s+/).filter(Boolean);
+          var matches = pages.filter(function (page) {
+            var tags = (page.tags || []).join(' ');
+            var categories = (page.categories || []).join(' ');
+            var hay = [
+              page.title,
+              page.summary,
+              page.content,
+              tags,
+              categories
+            ].join(' ').toLowerCase();
+            return tokens.every(function (t) { return hay.indexOf(t) !== -1; });
+          });
+
+          if (!matches.length) {
+            resultsEl.innerHTML = '<article class="post"><div class="post-desc">No results found.</div></article>';
+            return;
+          }
+
+          var fragment = document.createDocumentFragment();
+          matches.slice(0, 50).forEach(function (page) {
+            var item = document.createElement('article');
+            item.className = 'post';
+            var title = escapeHtml(page.title || page.permalink);
+            var summary = escapeHtml(page.summary || '');
+            var link = escapeHtml(page.permalink || '#');
+            var date = escapeHtml(page.date || '');
+            var time = page.readingTime ? (page.readingTime + ' min read') : '';
+            var meta = '';
+            if (date || time) {
+              meta = '<div class="post-meta">' +
+                (date ? '<span class="meta-item">' + date + '</span>' : '') +
+                (date && time ? '<em></em>' : '') +
+                (time ? '<span class="meta-item">' + time + '</span>' : '') +
+                '</div>';
+            }
+            item.innerHTML = '<div class="post-header">' +
+              '<a class="post-title" href="' + link + '" title="' + title + '">' + title + '</a>' +
+              meta +
+              '</div>' +
+              (summary ? '<div class="post-desc">' + summary + '</div>' : '');
+            fragment.appendChild(item);
+          });
+          resultsEl.appendChild(fragment);
+        })
+        .catch(function () {
+          resultsEl.innerHTML = '<article class="post"><div class="post-desc">Search index failed to load.</div></article>';
+        });
     })();
   </script>
 {{ end }}

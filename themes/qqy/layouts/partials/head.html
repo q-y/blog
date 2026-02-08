@@ -3,5 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ if .IsHome }}{{ .Site.Params.siteTitle }}{{ else }}{{ .Title }} | {{ .Site.Params.siteTitle }}{{ end }}</title>
 <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.siteTitle }}{{ end }}">
+<link rel="icon" href="{{ "favicon.ico" | relURL }}">
+<link rel="stylesheet" href="{{ "css/fontawesome.css" | relURL }}">
 <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
 <script defer src="{{ "js/site.js" | relURL }}"></script>

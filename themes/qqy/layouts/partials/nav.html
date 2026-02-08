@@ -1,19 +1,23 @@
 <div id="nav">
   <nav class="nav-menu">
-    <a class="site-name" href="{{ .Site.BaseURL }}" title="{{ .Site.Params.siteTitle }}">{{ .Site.Params.siteName }}</a>
+    {{ $logoText := .Site.Params.logoText | default .Site.Title }}
+    <a class="site-name{{ if .IsHome }} current{{ end }}" href="{{ .Site.BaseURL }}" title="{{ .Site.Params.siteSubtitle }}">{{ slicestr $logoText 0 1 }}</a>
+    <a class="site-index{{ if .IsHome }} current{{ end }}" href="{{ "/" | relURL }}"><i class="fa fa-home"></i><span>首页</span></a>
     {{ range .Site.Menus.main }}
-      {{ $active := or ( $.IsMenuCurrent "main" . ) ( $.HasMenuCurrent "main" . ) }}
-      <a href="{{ .URL | relURL }}" class="{{ if $active }}current{{ end }}">
-        <span class="icon">{{ partial "icon.html" .Identifier }}</span>
-        <span class="title">{{ .Name }}</span>
-      </a>
+      {{ if ne .Identifier "home" }}
+        {{ $menuURL := .URL | relURL }}
+        {{ $currentURL := $.RelPermalink | relURL }}
+        {{ $active := or ( $.IsMenuCurrent "main" . ) ( $.HasMenuCurrent "main" . ) ( eq (trim $menuURL "/") (trim $currentURL "/") ) }}
+        {{ $icon := .Identifier | default (urlize .Name) }}
+        <a href="{{ $menuURL }}" class="{{ if $active }}current{{ end }}">
+          <i class="fa fa-{{ $icon }}"></i>
+          <span class="title">{{ .Name }}</span>
+        </a>
+      {{ end }}
     {{ end }}
   </nav>
 </div>
 <div class="nav-user">
-  <button class="btn-search" type="button" aria-label="搜索">{{ partial "icon.html" "search" }}</button>
-  <button class="btn-read-mode" type="button" aria-label="切换主题" data-mode="day">
-    <span class="mode-sun">{{ partial "icon.html" "sun" }}</span>
-    <span class="mode-moon">{{ partial "icon.html" "moon" }}</span>
-  </button>
+  <a class="btn-search" href="#" aria-label="Search" aria-expanded="false"><i class="fa fa-search"></i></a>
+  <a class="btn-read-mode" href="#" aria-label="Toggle theme" data-mode="day"><i class="fa fa-sun-o"></i></a>
 </div>

@@ -1,20 +1,33 @@
-baseURL = "https://example.org/"
+# baseURL = "https://example.org/"
 languageCode = "zh-cn"
-title = "QY"
+title = "QQY"
 theme = "qqy"
 paginate = 6
 enableRobotsTXT = true
+
+[markup]
+  [markup.highlight]
+    style = "xcode"
+    lineNos = true
+    lineNumbersInTable = true
+
+[permalinks]
+  posts = "/:slug/"
 
 [taxonomies]
   tag = "tags"
   category = "categories"
 
 [params]
-  siteName = "QY"
-  siteTitle = "QY.PW"
-  siteSubtitle = "记录 · 分享 · 思考"
-  author = "QY"
+  siteName = "QQY"
+  siteTitle = "QQY.PW"
+  siteSubtitle = "QQ 有 PoWer"
+  author = "QQY"
   coverImage = "img/cover.svg"
+  avatarUrl = "img/avatar.jpg"
+  logoText = "骞"
+  summaryTruncate = 200
+  readingCharsPerMin = 400
 
 [menu]
   [[menu.main]]
