@@ -1,10 +1,11 @@
 ---
 title: "由openclaw自动编写的post"
-date: 2026-02-15T01:51:22+08:00
+date: 2026-02-15T01:39:32+08:00
+slug: "openclaw-auto-written-post"
 draft: false
-tags: ["program", "work"]
-categories: ["share"]
-description: "A practice note on automating writing and publishing workflow"
+tags: ["openclaw", "hugo", "automation", "writing"]
+categories: ["automation"]
+description: "A practice note on automating writing and publishing workflow with OpenClaw and Hugo"
 ---
 
 很多时候，我们以为写博客的难点是“没有灵感”，但真正拦住人的，常常是流程：打开编辑器、整理格式、检查图片、提交仓库、等待部署，任何一步卡住，热情就会迅速降温。技术写作的门槛，往往不是文字本身，而是那些重复而琐碎的动作。
