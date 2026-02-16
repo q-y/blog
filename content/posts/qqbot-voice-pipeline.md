@@ -1,6 +1,6 @@
 ---
 title: "QQ 语音自动化链路实战：离线 ASR + 本地 TTS + SILK 发送"
-date: 2026-02-16T08:50:39+08:00
+date: 2026-02-16T09:04:02+08:00
 slug: "qqbot-voice-pipeline"
 draft: false
 tags: ["work", "program", "linux"]
@@ -123,14 +123,17 @@ silk-wasm encode tts_24k_mono.wav tts.silk
 # D. 通过 QQ 音频消息发送 tts.silk（单条发送）
 ```
 
-## 后续可继续优化
+## QQBot 适配层修改（单独章节）
 
-- 增加长句自动切分与韵律参数模板，缓解断词/断句感。
-- 引入噪声样本集做回归测试，评估复杂环境鲁棒性。
-- 给 outbound 增加多版本 profile，按“清晰度优先/自然度优先”动态切换。
+前面的 ASR/TTS 解决的是“能生成语音”，这一节解决的是“能在 QQ 端稳定播放”。
 
+### 适配目标
 
-一个简化后的 payload 示例（示意）：
+1. 在通道层增加 `audio` 消息分支（而不是把语音当普通文件发送）。
+2. 明确 `audio/silk` 的 payload 结构，确保 QQ 侧可识别。
+3. 发送策略默认“单条语音优先”，避免文字与语音混发导致不播放。
+
+### 简化 payload 示例（示意）
 
 ```json
 {
@@ -143,17 +146,11 @@ silk-wasm encode tts_24k_mono.wav tts.silk
 
 ### 核心代码片段（可复现改造）
 
-下面给一个 Node.js 风格的最小改造示例，重点是把 `audio/silk` 走独立分支：
-
 ```ts
 // pseudo: qqbot adapter
 async function sendMessage(msg: OutboundMessage) {
-  if (msg.type === 'audio') {
-    return sendAudio(msg)
-  }
-  if (msg.type === 'image') {
-    return sendImage(msg)
-  }
+  if (msg.type === 'audio') return sendAudio(msg)
+  if (msg.type === 'image') return sendImage(msg)
   return sendText(msg)
 }
 
@@ -181,13 +178,12 @@ async function sendAudio(msg: { path: string; mime?: string; durationMs?: number
 }
 ```
 
-再配一个“单条语音优先”的发送策略（避免文字混发导致不播放）：
-
 ```ts
+// 语音单条优先，避免文字混发导致不播放
 async function replyVoiceFirst(audioPath: string, text?: string) {
   await sendMessage({ type: 'audio', path: audioPath, mime: 'audio/silk' })
 
-  // 建议：默认不跟文字；若业务必须补充说明，延后单独发
+  // 若业务必须补充文字，延后单独发
   if (text && text.trim()) {
     await delay(800)
     await sendMessage({ type: 'text', text })
@@ -195,20 +191,22 @@ async function replyVoiceFirst(audioPath: string, text?: string) {
 }
 ```
 
-以及一个从 WAV 到 SILK 的可执行转换函数：
-
 ```ts
+// wav -> silk
 async function wavToSilk(inputWav: string, outputSilk: string) {
-  // 先规范化，减少不同来源音频造成的兼容问题
   await execa('ffmpeg', [
     '-y', '-i', inputWav,
     '-ac', '1', '-ar', '24000', '-c:a', 'pcm_s16le',
     '/tmp/tts_24k_mono.wav',
   ])
-
-  // 再转 SILK
   await execa('silk-wasm', ['encode', '/tmp/tts_24k_mono.wav', outputSilk])
 }
 ```
 
-如果你的适配层还在“仅支持 text/image”，建议先补齐 audio 分支，再做上层编排；否则 TTS 链路即使生成成功，也会卡在最后一跳。
+> 如果你的适配层还在“仅支持 text/image”，建议先补齐 audio 分支，再做上层编排；否则 TTS 链路即使生成成功，也会卡在最后一跳。
+
+## 后续可继续优化
+
+- 增加长句自动切分与韵律参数模板，缓解断词/断句感。
+- 引入噪声样本集做回归测试，评估复杂环境鲁棒性。
+- 给 outbound 增加多版本 profile，按“清晰度优先/自然度优先”动态切换。
