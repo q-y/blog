@@ -1,6 +1,6 @@
 ---
 title: "QQ 语音自动化链路实战：离线 ASR + 本地 TTS + SILK 发送"
-date: 2026-02-16T08:46:56+08:00
+date: 2026-02-16T08:50:39+08:00
 slug: "qqbot-voice-pipeline"
 draft: false
 tags: ["work", "program", "linux"]
@@ -99,29 +99,6 @@ silk-wasm encode tts_24k_mono.wav tts.silk
 
 在 OpenClaw 的 QQ 适配层，按音频消息 payload 发送 `tts.silk` 即可。
 
-## QQBot 适配层改造（关键）
-
-除了 ASR/TTS 本身，昨天还有一个决定成败的点：**QQBot 通道代码增加了音频消息适配**，让代理不仅能“生成音频文件”，还能“按 QQ 可识别的音频类型发出去”。
-
-核心改造要点：
-
-1. **通道层识别音频消息类型**（而不把它当普通文件发送）。
-2. **接收 SILK 产物并封装为 QQ 音频 payload**。
-3. **发送策略改为单条音频消息优先**，避免“文字+语音混发”导致客户端不播放。
-
-一个简化后的 payload 示例（示意）：
-
-```json
-{
-  "msg_type": "audio",
-  "file": "tts.silk",
-  "mime": "audio/silk",
-  "duration_ms": 3200
-}
-```
-
-如果你的适配层还在“仅支持 text/image”，建议先补齐 audio 分支，再做上层编排；否则 TTS 链路即使生成成功，也会卡在最后一跳。
-
 ## 可直接复用的工程策略
 
 1. **ASR 默认 small**：在精度、速度、资源占用之间平衡较好。
@@ -151,3 +128,87 @@ silk-wasm encode tts_24k_mono.wav tts.silk
 - 增加长句自动切分与韵律参数模板，缓解断词/断句感。
 - 引入噪声样本集做回归测试，评估复杂环境鲁棒性。
 - 给 outbound 增加多版本 profile，按“清晰度优先/自然度优先”动态切换。
+
+
+一个简化后的 payload 示例（示意）：
+
+```json
+{
+  "msg_type": "audio",
+  "file": "tts.silk",
+  "mime": "audio/silk",
+  "duration_ms": 3200
+}
+```
+
+### 核心代码片段（可复现改造）
+
+下面给一个 Node.js 风格的最小改造示例，重点是把 `audio/silk` 走独立分支：
+
+```ts
+// pseudo: qqbot adapter
+async function sendMessage(msg: OutboundMessage) {
+  if (msg.type === 'audio') {
+    return sendAudio(msg)
+  }
+  if (msg.type === 'image') {
+    return sendImage(msg)
+  }
+  return sendText(msg)
+}
+
+async function sendAudio(msg: { path: string; mime?: string; durationMs?: number }) {
+  const mime = msg.mime ?? 'audio/silk'
+
+  // 1) 基本校验：存在性 + 后缀（建议同时校验 magic bytes）
+  await fs.promises.access(msg.path)
+  if (!msg.path.endsWith('.silk')) {
+    throw new Error(`audio must be .silk: ${msg.path}`)
+  }
+
+  // 2) 读文件并组装通道 payload
+  const data = await fs.promises.readFile(msg.path)
+  const payload = {
+    msg_type: 'audio',
+    file_name: path.basename(msg.path),
+    mime,
+    duration_ms: msg.durationMs ?? 0,
+    data_base64: data.toString('base64'),
+  }
+
+  // 3) 发给 QQ 通道
+  return qqbotClient.send(payload)
+}
+```
+
+再配一个“单条语音优先”的发送策略（避免文字混发导致不播放）：
+
+```ts
+async function replyVoiceFirst(audioPath: string, text?: string) {
+  await sendMessage({ type: 'audio', path: audioPath, mime: 'audio/silk' })
+
+  // 建议：默认不跟文字；若业务必须补充说明，延后单独发
+  if (text && text.trim()) {
+    await delay(800)
+    await sendMessage({ type: 'text', text })
+  }
+}
+```
+
+以及一个从 WAV 到 SILK 的可执行转换函数：
+
+```ts
+async function wavToSilk(inputWav: string, outputSilk: string) {
+  // 先规范化，减少不同来源音频造成的兼容问题
+  await execa('ffmpeg', [
+    '-y', '-i', inputWav,
+    '-ac', '1', '-ar', '24000', '-c:a', 'pcm_s16le',
+    '/tmp/tts_24k_mono.wav',
+  ])
+
+  // 再转 SILK
+  await execa('silk-wasm', ['encode', '/tmp/tts_24k_mono.wav', outputSilk])
+}
+```
+
+如果你的适配层还在“仅支持 text/image”，建议先补齐 audio 分支，再做上层编排；否则 TTS 链路即使生成成功，也会卡在最后一跳。
