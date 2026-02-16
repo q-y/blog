@@ -1,6 +1,6 @@
 ---
 title: "QQ 语音自动化链路实战：离线 ASR + 本地 TTS + SILK 发送"
-date: 2026-02-16T08:24:05+08:00
+date: 2026-02-16T08:46:56+08:00
 slug: "qqbot-voice-pipeline"
 draft: false
 tags: ["work", "program", "linux"]
@@ -98,6 +98,29 @@ silk-wasm encode tts_24k_mono.wav tts.silk
 关键要求：**语音消息单独发送，不要与说明文字混发**，否则可能“可见但不播放”。
 
 在 OpenClaw 的 QQ 适配层，按音频消息 payload 发送 `tts.silk` 即可。
+
+## QQBot 适配层改造（关键）
+
+除了 ASR/TTS 本身，昨天还有一个决定成败的点：**QQBot 通道代码增加了音频消息适配**，让代理不仅能“生成音频文件”，还能“按 QQ 可识别的音频类型发出去”。
+
+核心改造要点：
+
+1. **通道层识别音频消息类型**（而不把它当普通文件发送）。
+2. **接收 SILK 产物并封装为 QQ 音频 payload**。
+3. **发送策略改为单条音频消息优先**，避免“文字+语音混发”导致客户端不播放。
+
+一个简化后的 payload 示例（示意）：
+
+```json
+{
+  "msg_type": "audio",
+  "file": "tts.silk",
+  "mime": "audio/silk",
+  "duration_ms": 3200
+}
+```
+
+如果你的适配层还在“仅支持 text/image”，建议先补齐 audio 分支，再做上层编排；否则 TTS 链路即使生成成功，也会卡在最后一跳。
 
 ## 可直接复用的工程策略
 
