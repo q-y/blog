@@ -1,6 +1,6 @@
 ---
 title: "QQ 语音自动化链路实战：离线 ASR + 本地 TTS + SILK 发送"
-date: 2026-02-16T09:17:23+08:00
+date: 2026-02-16T09:56:37+08:00
 slug: "qqbot-voice-pipeline"
 draft: false
 tags: ["work", "program", "linux"]
@@ -129,7 +129,7 @@ silk-wasm encode tts_24k_mono.wav tts.silk
 # D. 通过 QQ 音频消息发送 tts.silk（单条发送）
 ```
 
-## QQBot 适配层修改（单独章节）
+## 附录：QQBot 适配层修改
 
 前面的 ASR/TTS 解决的是“能生成语音”，这一节解决的是“能在 QQ 端稳定播放”。
 
@@ -210,9 +210,3 @@ async function wavToSilk(inputWav: string, outputSilk: string) {
 ```
 
 > 如果你的适配层还在“仅支持 text/image”，建议先补齐 audio 分支，再做上层编排；否则 TTS 链路即使生成成功，也会卡在最后一跳。
-
-## 后续可继续优化
-
-- 增加长句自动切分与韵律参数模板，缓解断词/断句感。
-- 引入噪声样本集做回归测试，评估复杂环境鲁棒性。
-- 给 outbound 增加多版本 profile，按“清晰度优先/自然度优先”动态切换。
