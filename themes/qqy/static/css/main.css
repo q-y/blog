@@ -1202,6 +1202,11 @@ body.night-mode .highlight table td:first-child code span:nth-child(2n) {
     width: 45px;
   }
 
+  #nav .nav-menu a.site-name.menu-toggle {
+    background: var(--nav-accent);
+    color: #fff;
+  }
+
   #nav .nav-menu a:not(.site-name) {
     display: none;
   }
