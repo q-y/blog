@@ -32,6 +32,7 @@ body {
   color: var(--text);
   background: var(--bg);
   overflow-x: hidden;
+  overflow-anchor: none;
   padding-left: var(--nav-width);
 }
 
@@ -367,6 +368,17 @@ img {
   background: var(--soft);
   overflow: hidden;
   z-index: 1;
+}
+
+@supports (height: 100dvh) {
+  #wrapper {
+    min-height: 100dvh;
+  }
+
+  #nav,
+  #cover {
+    height: 100dvh;
+  }
 }
 
 #cover .cover-img {
@@ -1111,6 +1123,12 @@ body.night-mode .highlight table td:first-child code span:nth-child(2n) {
 
   #wrapper {
     min-height: calc(100vh - 45px);
+  }
+
+  @supports (height: 100dvh) {
+    #wrapper {
+      min-height: calc(100dvh - 45px);
+    }
   }
 
   :root {
