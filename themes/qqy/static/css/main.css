@@ -568,6 +568,8 @@ body.search-has-query .page-title li.search-query {
   font-weight: 700;
   color: var(--accent);
   font-size: 18px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .post-title:hover {
@@ -627,6 +629,8 @@ body.search-has-query .page-title li.search-query {
 .post-desc {
   color: #666;
   font-size: 14px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .post-single .post-title {
