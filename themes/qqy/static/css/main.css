@@ -717,6 +717,17 @@ img.avatar {
   color: #444;
 }
 
+body.night-mode .page-navigator a {
+  color: #d7dde7;
+  background: #4b535f;
+}
+
+body.night-mode .page-navigator a:hover,
+body.night-mode .page-navigator .current a {
+  background: #6a7482;
+  color: #ffffff;
+}
+
 .tag-list {
   display: flex;
   flex-wrap: wrap;
