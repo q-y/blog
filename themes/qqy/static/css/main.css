@@ -1067,6 +1067,17 @@ body.night-mode .highlight table td:first-child code span:nth-child(2n) {
 
   #nav .nav-menu a.site-name {
     display: flex;
+    background: var(--nav-accent);
+    color: #fff;
+    font-size: 0;
+    position: relative;
+  }
+
+  #nav .nav-menu a.site-name::before {
+    content: "\f015";
+    font-family: FontAwesome;
+    font-size: 18px;
+    line-height: 45px;
   }
 
   #nav .nav-menu a.site-index {
@@ -1205,6 +1216,11 @@ body.night-mode .highlight table td:first-child code span:nth-child(2n) {
   #nav .nav-menu a.site-name.menu-toggle {
     background: var(--nav-accent);
     color: #fff;
+    font-size: 16px;
+  }
+
+  #nav .nav-menu a.site-name.menu-toggle::before {
+    content: none;
   }
 
   #nav .nav-menu a:not(.site-name) {
