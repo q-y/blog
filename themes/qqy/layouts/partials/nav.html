@@ -3,12 +3,14 @@
     {{ $logoText := .Site.Params.logoText | default .Site.Title }}
     <a class="site-name{{ if .IsHome }} current{{ end }}" href="{{ .Site.BaseURL }}" title="{{ .Site.Params.siteSubtitle }}">{{ slicestr $logoText 0 1 }}</a>
     <a class="site-index{{ if .IsHome }} current{{ end }}" href="{{ "/" | relURL }}"><i class="fa fa-home"></i><span>首页</span></a>
+    {{ $iconMap := dict "categories" "th-large" "tags" "tags" "archives" "archive" "links" "link" "about" "user" }}
     {{ range .Site.Menus.main }}
       {{ if ne .Identifier "home" }}
         {{ $menuURL := .URL | relURL }}
         {{ $currentURL := $.RelPermalink | relURL }}
         {{ $active := or ( $.IsMenuCurrent "main" . ) ( $.HasMenuCurrent "main" . ) ( eq (trim $menuURL "/") (trim $currentURL "/") ) }}
-        {{ $icon := .Identifier | default (urlize .Name) }}
+        {{ $key := .Identifier | default (urlize .Name) }}
+        {{ $icon := index $iconMap $key | default "circle-o" }}
         <a href="{{ $menuURL }}" class="{{ if $active }}current{{ end }}">
           <i class="fa fa-{{ $icon }}"></i>
           <span class="title">{{ .Name }}</span>

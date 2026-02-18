@@ -719,6 +719,7 @@ img.avatar {
   background: #eee;
   border-radius: 14px;
   font-size: 13px;
+  white-space: nowrap;
 }
 
 .tag-list a:hover {

@@ -22,3 +22,9 @@
 .fa-angle-up:before { content: "\f106"; }
 .fa-sun-o:before { content: "\f185"; }
 .fa-moon-o:before { content: "\f186"; }
+.fa-th-large:before { content: "\f009"; }
+.fa-tags:before { content: "\f02c"; }
+.fa-archive:before { content: "\f187"; }
+.fa-link:before { content: "\f0c1"; }
+.fa-user:before { content: "\f007"; }
+.fa-circle-o:before { content: "\f10c"; }
