@@ -1015,6 +1015,12 @@ body.night-mode code {
   background: #363b44;
 }
 
+body.night-mode blockquote {
+  background: #343b45;
+  border-left-color: #5c6675;
+  color: #d3dae6;
+}
+
 body.night-mode pre {
   background: #1f242b;
 }
