@@ -554,7 +554,7 @@ body.search-has-query .page-title li.search-query {
   clear: both;
 }
 
-.post:last-child {
+.post:last-of-type {
   border-bottom: none;
 }
 
