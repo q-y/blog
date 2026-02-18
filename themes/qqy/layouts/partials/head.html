@@ -4,6 +4,7 @@
 <title>{{ if .IsHome }}{{ .Site.Params.siteTitle }}{{ else }}{{ .Title }} | {{ .Site.Params.siteTitle }}{{ end }}</title>
 <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.siteTitle }}{{ end }}">
 <link rel="icon" href="{{ "favicon.ico" | relURL }}">
-<link rel="stylesheet" href="{{ "css/fontawesome.css" | relURL }}">
+<link rel="preload" href="{{ "css/fonts/fontawesome-webfont.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="{{ "css/fontawesome-lite.css" | relURL }}">
 <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
 <script defer src="{{ "js/site.js" | relURL }}"></script>

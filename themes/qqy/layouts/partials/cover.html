@@ -11,7 +11,7 @@
   </noscript>
   <div class="cover-info">
     {{ if .Site.Params.avatarUrl }}
-      <img class="avatar" width="72" src="{{ .Site.Params.avatarUrl | relURL }}" alt="" />
+      <img class="avatar" width="72" src="{{ .Site.Params.avatarUrl | relURL }}" alt="" loading="eager" decoding="async" fetchpriority="high" />
     {{ else }}
       <h3>{{ .Site.Params.siteTitle }}</h3>
     {{ end }}
