@@ -1173,20 +1173,57 @@ body.night-mode .highlight table td:first-child code span:nth-child(2n) {
   #nav {
     height: auto;
     bottom: auto;
+    width: 45px;
+    overflow: visible;
   }
 
   #nav .nav-menu {
     height: 45px;
     overflow: hidden;
     background: var(--nav-bg);
+    width: 45px;
+    border-radius: 0 0 6px 0;
   }
 
-  #nav .nav-menu:hover {
-    height: auto;
+  #nav .nav-menu a {
+    justify-content: flex-start;
+    padding: 0 14px;
+    white-space: nowrap;
   }
 
-  #nav .nav-menu a.site-index {
+  #nav .nav-menu a.site-name {
+    display: inline-flex;
+    justify-content: center;
+    padding: 0;
+    width: 45px;
+  }
+
+  #nav .nav-menu a:not(.site-name) {
     display: none;
+  }
+
+  #nav.nav-open {
+    width: 210px;
+  }
+
+  #nav.nav-open .nav-menu {
+    width: 210px;
+    height: auto;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.22);
+  }
+
+  #nav.nav-open .nav-menu a {
+    display: flex;
+  }
+
+  #nav.nav-open .nav-menu a.site-name {
+    width: 100%;
+    justify-content: flex-start;
+    padding: 0 14px;
+  }
+
+  #nav.nav-open .nav-menu a .title {
+    display: inline;
   }
 
   #cover {
