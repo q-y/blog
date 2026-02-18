@@ -1047,6 +1047,12 @@ body.night-mode .highlight table td:last-child pre {
   background: #6a7b97 !important;
 }
 
+body.night-mode .highlight table td:last-child code,
+body.night-mode .highlight table td:last-child code > span,
+body.night-mode .highlight table td:last-child code span {
+  color: #000 !important;
+}
+
 body.night-mode .highlight table td:last-child code > span:nth-child(2n) {
   background: #64748f;
 }
