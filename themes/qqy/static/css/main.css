@@ -1191,6 +1191,10 @@ body.night-mode .highlight table td:first-child code span:nth-child(2n) {
     white-space: nowrap;
   }
 
+  #nav .nav-menu a span {
+    display: none;
+  }
+
   #nav .nav-menu a.site-name {
     display: inline-flex;
     justify-content: center;
