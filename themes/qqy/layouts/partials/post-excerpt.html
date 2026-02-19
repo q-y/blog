@@ -12,4 +12,7 @@
   {{- end -}}
 {{- end -}}
 {{- $excerpt = ($excerpt | htmlUnescape | htmlUnescape | replaceRE `&[a-zA-Z0-9#]+;` " " | replaceRE `(?m)^#.*$` "" | replaceRE "`+" "" | replaceRE `\s+` " ") -}}
-{{- $excerpt | truncate $truncate -}}
+{{- $excerpt = ($excerpt | truncate $truncate | replaceRE `[\s\p{P}…。！？；：，、.!?;:,，。]*$` "") -}}
+{{- if gt (len $excerpt) 0 -}}
+  {{- printf "%s..." $excerpt -}}
+{{- end -}}
