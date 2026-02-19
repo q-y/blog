@@ -1075,9 +1075,8 @@ body.night-mode pre {
   color: #d3dae6;
 }
 
-body.night-mode pre code,
-body.night-mode pre code span {
-  color: #d3dae6 !important;
+body.night-mode pre code {
+  color: #d3dae6;
   background: transparent;
 }
 
