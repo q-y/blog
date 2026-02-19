@@ -5,7 +5,9 @@
       {{ with .Description }}<p>{{ . }}</p>{{ end }}
     </div>
   {{ end }}
-  {{ $paginator := .Paginate (where .Pages "Section" "posts") }}
+  {{ $pages := where .Site.RegularPages "Section" "posts" }}
+  {{ $pages = where $pages "RelPermalink" "ne" "/search/" }}
+  {{ $paginator := .Paginate $pages }}
   {{ range $paginator.Pages }}
     <article class="post">
       <div class="post-header">
