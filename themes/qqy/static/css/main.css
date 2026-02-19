@@ -1072,11 +1072,11 @@ body.night-mode .archive-item-date {
 body.night-mode pre {
   background: #343b45;
   border: 1px solid #3a404a;
-  color: #d3dae6;
+  color: #999;
 }
 
 body.night-mode pre code {
-  color: #d3dae6;
+  color: #999;
   background: transparent;
 }
 
