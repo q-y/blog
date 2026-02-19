@@ -19,21 +19,7 @@
             <span class="meta-item">{{ partial "reading-time.html" . }} min read</span>
           </div>
         </div>
-        <div class="post-desc">
-          {{ $excerpt := "" }}
-          {{ with .Params.summary }}
-            {{ $excerpt = . }}
-          {{ else }}
-            {{ $firstPara := findRE `(?s)<p>.*?</p>` .Content 1 }}
-            {{ if gt (len $firstPara) 0 }}
-              {{ $excerpt = (index $firstPara 0 | plainify) }}
-            {{ else }}
-              {{ $excerpt = (.Summary | plainify) }}
-            {{ end }}
-          {{ end }}
-          {{ $excerpt = ($excerpt | htmlUnescape | htmlUnescape | replaceRE `&[a-zA-Z0-9#]+;` " " | replaceRE `(?m)^#.*$` "" | replaceRE "`+" "" | replaceRE `\s+` " ") }}
-          {{ $excerpt | truncate (default 200 $.Site.Params.summaryTruncate) }}
-        </div>
+        <div class="post-desc">{{ partial "post-excerpt.html" (dict "page" . "truncate" (default 200 $.Site.Params.summaryTruncate)) }}</div>
       </article>
     {{ end }}
   {{ end }}

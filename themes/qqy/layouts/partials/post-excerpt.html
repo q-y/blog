@@ -1,0 +1,15 @@
+{{- $p := .page -}}
+{{- $truncate := .truncate | default (default 200 $p.Site.Params.summaryTruncate) -}}
+{{- $excerpt := "" -}}
+{{- with $p.Params.summary -}}
+  {{- $excerpt = . -}}
+{{- else -}}
+  {{- $firstPara := findRE `(?s)<p>.*?</p>` $p.Content 1 -}}
+  {{- if gt (len $firstPara) 0 -}}
+    {{- $excerpt = (index $firstPara 0 | plainify) -}}
+  {{- else -}}
+    {{- $excerpt = ($p.Summary | plainify) -}}
+  {{- end -}}
+{{- end -}}
+{{- $excerpt = ($excerpt | htmlUnescape | htmlUnescape | replaceRE `&[a-zA-Z0-9#]+;` " " | replaceRE `(?m)^#.*$` "" | replaceRE "`+" "" | replaceRE `\s+` " ") -}}
+{{- $excerpt | truncate $truncate -}}

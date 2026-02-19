@@ -5,7 +5,7 @@
       "title" .Title
       "date" (.Date.Format "2006-01-02")
       "readingTime" (partial "reading-time.html" .)
-      "summary" (.Summary | plainify | truncate (default 200 .Site.Params.summaryTruncate))
+      "summary" (partial "post-excerpt.html" (dict "page" . "truncate" (default 200 .Site.Params.summaryTruncate)))
       "content" (.Plain | plainify | truncate 2000)
       "permalink" .RelPermalink
       "tags" (or .Params.tags (slice))
