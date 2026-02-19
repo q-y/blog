@@ -552,7 +552,8 @@ body.search-has-query .page-title li.search-query {
   animation: fadeUp 0.6s ease both;
 }
 
-.main-inner > .post:not(.post-single):first-of-type {
+.main-inner > .post:not(.post-single):first-of-type,
+#search-results > .post:first-of-type {
   margin-top: 9px;
 }
 
