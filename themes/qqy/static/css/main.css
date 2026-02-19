@@ -549,7 +549,7 @@ body.search-has-query .page-title li.search-query {
 }
 
 body.home .main-inner > .post:first-of-type {
-  margin-top: 26px;
+  margin-top: 13px;
 }
 
 .post::after {
@@ -771,7 +771,7 @@ body.night-mode .page-navigator .current a {
 }
 
 .taxonomy-content {
-  margin: 34px 0 0;
+  margin: 28px 0 0;
 }
 
 .taxonomy-cards {
