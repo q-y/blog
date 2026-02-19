@@ -1021,6 +1021,27 @@ body.night-mode blockquote {
   color: #d3dae6;
 }
 
+body.night-mode .taxonomy-card,
+body.night-mode .archive-card,
+body.night-mode .tag-list a {
+  background: #343b45;
+}
+
+body.night-mode .taxonomy-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+}
+
+body.night-mode .archive-card-title {
+  color: #d3dae6;
+}
+
+body.night-mode .taxonomy-card-count,
+body.night-mode .taxonomy-card-desc,
+body.night-mode .archive-card-count,
+body.night-mode .archive-item-date {
+  color: #aeb8c7;
+}
+
 body.night-mode pre {
   background: #1f242b;
 }
