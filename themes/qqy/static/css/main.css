@@ -1018,11 +1018,11 @@ body.night-mode .post-desc {
 }
 
 body.night-mode .post-content a {
-  color: #3dbcf5;
+  color: var(--accent);
 }
 
 body.night-mode .post-content a:hover {
-  color: #4094c7;
+  color: var(--accent);
 }
 
 body.night-mode .nav-user i {
