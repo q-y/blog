@@ -6,6 +6,7 @@ lastmod: 2019-08-18
 slug: "svd"
 tags: ["matlab"]
 categories: ["share"]
+summary: "复 Hermitian 矩阵做特征值分解时，建议使用 svd 而非 eig，并解释 U/S 的含义。"
 ---
 
 我们通信系统中往往研究的均为复数（复矩阵），但在求复Hermitian矩阵的特征值分解时，千万不要用`eig`函数（对于实矩阵没问题），一定要用
