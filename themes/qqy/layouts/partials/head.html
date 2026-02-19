@@ -5,6 +5,21 @@
 <meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.siteTitle }}{{ end }}">
 <link rel="icon" href="{{ "favicon.ico" | relURL }}">
 <link rel="preload" href="{{ "css/fonts/fontawesome-webfont.woff2" | relURL }}" as="font" type="font/woff2" crossorigin>
+<script>
+  (function () {
+    try {
+      if (localStorage.getItem('mode') === 'night') {
+        document.documentElement.classList.add('night-mode');
+      }
+    } catch (e) {}
+  })();
+</script>
+<style>
+  html.night-mode,
+  html.night-mode body {
+    background: #3f3f3f;
+  }
+</style>
 <link rel="stylesheet" href="{{ "css/fontawesome-lite.css" | relURL }}">
 <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
 <script defer src="{{ "js/site.js" | relURL }}"></script>
