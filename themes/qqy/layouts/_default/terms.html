@@ -4,32 +4,34 @@
       <h1 class="post-title">{{ .Title }}</h1>
     </div>
 
-    {{ if eq .Data.Plural "categories" }}
-      <div class="taxonomy-cards">
-        {{ range .Data.Terms.Alphabetical }}
-          {{ $desc := .Page.Description | default .Page.Params.description }}
-          <section class="taxonomy-card">
-            <div class="taxonomy-card-head">
-              <a class="taxonomy-card-title" href="{{ .Page.RelPermalink }}">{{ .Page.Title }}</a>
-              <span class="taxonomy-card-count">文章：{{ .Count }}</span>
-            </div>
-            {{ with $desc }}
-              <p class="taxonomy-card-desc">{{ . }}</p>
-            {{ end }}
-            <ul class="taxonomy-card-list">
-              {{ range .Pages.ByDate.Reverse }}
-                <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    <div class="post-content taxonomy-content">
+      {{ if eq .Data.Plural "categories" }}
+        <div class="taxonomy-cards">
+          {{ range .Data.Terms.Alphabetical }}
+            {{ $desc := .Page.Description | default .Page.Params.description }}
+            <section class="taxonomy-card">
+              <div class="taxonomy-card-head">
+                <a class="taxonomy-card-title" href="{{ .Page.RelPermalink }}">{{ .Page.Title }}</a>
+                <span class="taxonomy-card-count">文章：{{ .Count }}</span>
+              </div>
+              {{ with $desc }}
+                <p class="taxonomy-card-desc">{{ . }}</p>
               {{ end }}
-            </ul>
-          </section>
-        {{ end }}
-      </div>
-    {{ else }}
-      <ul class="tag-list tag-list-large">
-        {{ range .Data.Terms.Alphabetical }}
-          <li><a href="{{ .Page.RelPermalink }}">{{ .Page.Title }} ({{ .Count }})</a></li>
-        {{ end }}
-      </ul>
-    {{ end }}
+              <ul class="taxonomy-card-list">
+                {{ range .Pages.ByDate.Reverse }}
+                  <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+                {{ end }}
+              </ul>
+            </section>
+          {{ end }}
+        </div>
+      {{ else }}
+        <ul class="tag-list tag-list-large">
+          {{ range .Data.Terms.Alphabetical }}
+            <li><a href="{{ .Page.RelPermalink }}">{{ .Page.Title }} ({{ .Count }})</a></li>
+          {{ end }}
+        </ul>
+      {{ end }}
+    </div>
   </article>
 {{ end }}
