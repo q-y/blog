@@ -6,6 +6,7 @@ lastmod: 2019-05-21
 slug: "linux-nohup"
 tags: ["linux"]
 categories: ["share"]
+summary: "nohup、setsid、screen 三种方式让 Linux 命令在断开 SSH 后继续运行，附常用示例。"
 ---
 
 nohup
