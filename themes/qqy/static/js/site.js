@@ -11,12 +11,15 @@
   var menuToggle = document.querySelector('#nav .menu-toggle');
 
   function setMode(mode) {
+    var root = document.documentElement;
     if (mode === 'night') {
       body.classList.add('night-mode');
+      root.classList.add('night-mode');
       btnMode.dataset.mode = 'night';
       btnMode.querySelector('i').className = 'fa fa-moon-o';
     } else {
       body.classList.remove('night-mode');
+      root.classList.remove('night-mode');
       btnMode.dataset.mode = 'day';
       btnMode.querySelector('i').className = 'fa fa-sun-o';
     }
