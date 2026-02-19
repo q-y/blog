@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="post-desc">
-        {{ .Summary | plainify | truncate (default 200 $.Site.Params.summaryTruncate) }}
+        {{ .Summary | plainify | htmlUnescape | truncate (default 200 $.Site.Params.summaryTruncate) }}
       </div>
     </article>
   {{ end }}
