@@ -756,18 +756,18 @@ body.night-mode .page-navigator .current a {
 }
 
 .taxonomy-head {
-  margin: 14px 0 16px;
-}
-
-.taxonomy-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: var(--accent);
   margin: 0;
 }
 
+.taxonomy-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: inherit;
+  margin: 0 0 6px;
+}
+
 .taxonomy-cards {
-  margin-top: 6px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -839,6 +839,10 @@ body.night-mode .page-navigator .current a {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
   overflow: hidden;
   margin-bottom: 18px;
+}
+
+.section-head.taxonomy-head + .archive-card {
+  margin-top: 20px;
 }
 
 .archive-card-head {
