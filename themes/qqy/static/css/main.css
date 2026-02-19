@@ -1017,12 +1017,13 @@ body.night-mode .post-desc {
   color: #999;
 }
 
-body.night-mode .post-content a {
-  color: #3dbcf5;
+body.night-mode a {
+  color: #ca0002;
 }
 
-body.night-mode .post-content a:hover {
-  color: #4094c7;
+body.night-mode a:hover,
+body.night-mode a:active {
+  color: #ca0002;
 }
 
 body.night-mode .nav-user i {
