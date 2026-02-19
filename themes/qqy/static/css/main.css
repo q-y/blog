@@ -733,8 +733,8 @@ body.night-mode .page-navigator a {
 
 body.night-mode .page-navigator a:hover,
 body.night-mode .page-navigator .current a {
-  background: #6a7482;
-  color: #ffffff;
+  background: #343b45;
+  color: #999;
 }
 
 .tag-list {
