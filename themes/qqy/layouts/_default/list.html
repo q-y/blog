@@ -28,7 +28,8 @@
             {{ $excerpt = (.Summary | plainify) }}
           {{ end }}
         {{ end }}
-        {{ $excerpt | htmlUnescape | htmlUnescape | truncate (default 200 $.Site.Params.summaryTruncate) }}
+        {{ $excerpt = ($excerpt | htmlUnescape | htmlUnescape | replaceRE `&[a-zA-Z0-9#]+;` " " | replaceRE `(?m)^#.*$` "" | replaceRE "`+" "" | replaceRE `\s+` " ") }}
+        {{ $excerpt | truncate (default 200 $.Site.Params.summaryTruncate) }}
       </div>
     </article>
   {{ end }}
