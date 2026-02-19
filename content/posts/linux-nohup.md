@@ -11,7 +11,7 @@ categories: ["share"]
 nohup
 -----
 
-nohup 的用途就是让提交的命令忽略 hangup 信号。只需在要处理的命令前加上 nohup 即可，标准输出和标准错误缺省会被重定向到 nohup.out 文件中。一般我们可在结尾加上"&"来将命令同时放入后台运行，也可用">filename 2>&1"来更改缺省的重定向文件名。
+nohup 的用途就是让提交的命令忽略 hangup 信号。只需在要处理的命令前加上 nohup 即可，标准输出和标准错误缺省会被重定向到 nohup.out 文件中。一般我们可在结尾加上 `&` 将命令放入后台运行，也可用 `>filename 2>&1` 更改缺省的重定向文件名。
 ```session
 # nohup ping www.ibm.com &
 [1] 3059
