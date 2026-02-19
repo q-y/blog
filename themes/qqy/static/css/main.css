@@ -1027,6 +1027,15 @@ body.night-mode .tag-list a {
   background: #343b45;
 }
 
+body.night-mode .tag-list a {
+  color: #d3dae6;
+}
+
+body.night-mode .tag-list a:hover {
+  background: #6a7482;
+  color: #ffffff;
+}
+
 body.night-mode .taxonomy-card {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
 }
