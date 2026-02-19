@@ -22,4 +22,20 @@
 </style>
 <link rel="stylesheet" href="{{ "css/fontawesome-lite.css" | relURL }}">
 <link rel="stylesheet" href="{{ "css/main.css" | relURL }}">
+<script type="speculationrules">
+{
+  "prerender": [
+    {
+      "source": "document",
+      "where": {
+        "and": [
+          { "href_matches": "/*" },
+          { "not": { "selector_matches": "a[download], a[target='_blank'], a[href^='#'], a[href^='mailto:'], a[href^='tel:']" } }
+        ]
+      },
+      "eagerness": "conservative"
+    }
+  ]
+}
+</script>
 <script defer src="{{ "js/site.js" | relURL }}"></script>
