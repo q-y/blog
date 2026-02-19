@@ -5,7 +5,7 @@
       {{ with .Description }}<p>{{ . }}</p>{{ end }}
     </div>
   {{ end }}
-  {{ $paginator := .Paginate (where .Pages "Type" "ne" "page") }}
+  {{ $paginator := .Paginate (where .Pages "Section" "posts") }}
   {{ range $paginator.Pages }}
     <article class="post">
       <div class="post-header">
