@@ -1077,6 +1077,7 @@ body.night-mode pre {
 
 body.night-mode pre code {
   color: #d3dae6;
+  background: transparent;
 }
 
 body.night-mode .highlight {
