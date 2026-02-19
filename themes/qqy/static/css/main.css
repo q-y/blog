@@ -910,6 +910,7 @@ body.night-mode .page-navigator .current a {
   width: var(--body-width);
   max-width: 1000px;
   margin-left: var(--cover-width);
+  position: relative;
 }
 
 .footer a {
@@ -919,7 +920,7 @@ body.night-mode .page-navigator .current a {
 .fixed-btn {
   display: inline-block;
   position: absolute;
-  right: 10px;
+  right: 0;
   top: 50%;
   transform: translateY(-50%);
   height: 43px;
