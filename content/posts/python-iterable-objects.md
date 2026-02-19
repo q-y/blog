@@ -6,6 +6,7 @@ lastmod: 2018-12-31
 slug: "python-iterable-objects"
 tags: ["program"]
 categories: ["share"]
+summary: "整理 Python 常见可迭代对象（list/dict/set/tuple）的增删操作及注意点。"
 ---
 
 转自：[http://blog.csdn.net/handsome_gay/article/details/52740055][1]

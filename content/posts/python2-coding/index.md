@@ -6,6 +6,7 @@ lastmod: 2020-06-22
 slug: "python2-coding"
 tags: ["program"]
 categories: ["share"]
+summary: "总结 Python2 中文编码常见坑与处理方法，包括 unicode、encode/decode 与正则匹配。"
 ---
 
 一般在py文件开头写
