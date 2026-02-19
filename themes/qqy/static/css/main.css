@@ -766,6 +766,10 @@ body.night-mode .page-navigator .current a {
   margin: 0 0 6px;
 }
 
+.taxonomy-content {
+  margin: 20px 0 0;
+}
+
 .taxonomy-cards {
   margin-top: 0;
   display: flex;
