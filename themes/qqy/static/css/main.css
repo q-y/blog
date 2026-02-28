@@ -937,18 +937,21 @@ body.night-mode .page-navigator .current a {
 
 .fixed-btn {
   display: inline-block;
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  position: fixed;
+  right: 10px;
+  bottom: 16px;
+  top: auto;
+  transform: none;
   height: 43px;
   line-height: 43px;
+  z-index: 1400;
 }
 
 .fixed-btn a {
-  display: inline-block;
-  margin-right: 10px;
-  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 43px;
   height: 43px;
   line-height: 43px;
   border: none;
