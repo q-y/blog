@@ -346,13 +346,19 @@ img {
   height: 43px;
   line-height: 43px;
   padding-right: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .nav-user a {
-  display: inline-block;
-  margin-right: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 43px;
   height: 43px;
   line-height: 43px;
+  margin-right: 0;
 }
 
 .nav-user a.btn-search {
@@ -938,7 +944,7 @@ body.night-mode .page-navigator .current a {
 .fixed-btn {
   display: inline-block;
   position: absolute;
-  right: 0;
+  right: 10px;
   top: 50%;
   transform: translateY(-50%);
   height: 43px;
