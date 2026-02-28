@@ -938,7 +938,7 @@ body.night-mode .page-navigator .current a {
 .fixed-btn {
   display: inline-block;
   position: absolute;
-  right: 0;
+  right: 7px;
   top: 50%;
   transform: translateY(-50%);
   height: 43px;
