@@ -1129,8 +1129,8 @@ body.night-mode .highlight table td:first-child code span:nth-child(2n) {
     position: relative;
   }
 
-  #nav .nav-menu a.site-name.current,
-  #nav .nav-menu a.site-name.current:hover {
+  #nav .nav-menu a.site-name.home-current,
+  #nav .nav-menu a.site-name.home-current:hover {
     background: var(--nav-accent);
   }
 

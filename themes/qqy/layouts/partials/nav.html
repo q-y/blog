@@ -1,7 +1,7 @@
 <div id="nav">
   <nav class="nav-menu">
     {{ $logoText := .Site.Params.logoText | default .Site.Title }}
-    <a class="site-name menu-toggle{{ if .IsHome }} current{{ end }}" href="{{ "/" | relURL }}" title="{{ .Site.Params.siteSubtitle }}" aria-label="打开菜单" aria-expanded="false">{{ slicestr $logoText 0 1 }}</a>
+    <a class="site-name menu-toggle{{ if .IsHome }} home-current{{ end }}" href="{{ "/" | relURL }}" title="{{ .Site.Params.siteSubtitle }}" aria-label="打开菜单" aria-expanded="false">{{ slicestr $logoText 0 1 }}</a>
     <a class="site-index{{ if .IsHome }} current{{ end }}" href="{{ "/" | relURL }}"><i class="fa fa-home"></i><span>首页</span></a>
     {{ $iconMap := dict "categories" "th-large" "tags" "tags" "archives" "archive" "links" "link" "about" "user" }}
     {{ range .Site.Menus.main }}
