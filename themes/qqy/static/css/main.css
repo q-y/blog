@@ -1123,10 +1123,15 @@ body.night-mode .highlight table td:first-child code span:nth-child(2n) {
 
   #nav .nav-menu a.site-name {
     display: flex;
-    background: var(--nav-accent);
+    background: none;
     color: #fff;
     font-size: 0;
     position: relative;
+  }
+
+  #nav .nav-menu a.site-name.current,
+  #nav .nav-menu a.site-name.current:hover {
+    background: var(--nav-accent);
   }
 
   #nav .nav-menu a.site-name::before {
