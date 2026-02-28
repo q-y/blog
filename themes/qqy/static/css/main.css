@@ -948,7 +948,7 @@ body.night-mode .page-navigator .current a {
 .fixed-btn a {
   display: inline-block;
   margin-right: 10px;
-  padding: 0 10px;
+  padding: 0;
   height: 43px;
   line-height: 43px;
   border: none;
