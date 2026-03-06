@@ -1,202 +1,162 @@
 ---
-title: "AI Agent技术路径全景：自动化、训练、推理与收数的一体化工程实践"
-date: 2026-03-06T12:53:39+08:00
+title: "AI Agent技术路径全景（修订）：面向BasicSR图像去噪任务的自动化、训练、推理与收数"
+date: 2026-03-06T13:49:54+08:00
 slug: "ai-agent-technical-paths-automation-training-inference-data"
 draft: false
 tags: ["automation", "program"]
 categories: ["automation"]
-description: "A hard-core engineering survey of AI agent implementation paths and practical stack recommendations for automation, training, inference, and data collection."
+description: "Revised technical article: network training/inference here means BasicSR-based image denoising training and inference, with agent-driven automation and data operations."
 ---
 
-## 摘要
+## 摘要（修正版）
 
-本文从**实现路径**而不是“概念热词”出发，对当前 AI Agent 技术栈按三条主线拆解：
+先纠正一个关键定义：本文中的“网络训推”**不是大语言模型（LLM）训推**，而是指**基于 BasicSR 的图像去噪网络训练与推理**（image denoising / restoration）。
 
-1. **编排层（Orchestration）**：单/多 Agent 的状态机、工具调用、HITL、可观测性。  
-2. **执行层（Execution）**：浏览器自动化、代码执行、API 调度、长任务恢复。  
-3. **模型与数据层（Model & Data）**：训练（SFT/RLHF）、推理服务（高吞吐）、收数（网页/API/结构化抽取）。
+因此，本文重新按这个目标给出技术路线：
 
-目标是回答一个工程问题：**如果你要做“AI 网络自动化训练 + 推理 + 收数”一体化系统，应该如何选型与组合？**
-
----
-
-## 1. Agent 技术路径：从“聊天机器人”到“可恢复工作流”
-
-### 路径 A：LLM + Function Calling（轻编排）
-
-- 核心机制：模型做决策、工具负责执行。
-- 典型框架：OpenAI Agents（含工具、知识、评测与追踪能力）。
-- 适用：中小规模自动化，强调开发速度。
-
-工程特征：
-- 上线快；
-- 对失败恢复与复杂状态一致性要求高时，需要额外工程补强。
-
-### 路径 B：状态机/图驱动编排（强编排）
-
-- 核心机制：将 agentic 过程显式建模为图（节点/边/状态）。
-- 典型框架：LangGraph、AutoGen Core、Semantic Kernel Agent Framework。
-- 适用：长链路任务、可中断恢复、多 Agent 协同。
-
-工程特征：
-- 可控性更高；
-- 初始设计成本更高，但后期稳定性与可观测性更好。
-
-### 路径 C：面向特定场景的垂直 Agent 平台
-
-- 代码场景：OpenHands、MetaGPT。  
-- 工作流平台：CrewAI、AutoGPT Platform。
-- 适用：希望快速获得“开箱可跑”的业务能力。
-
-工程特征：
-- 迭代快；
-- 平台抽象有时会限制底层可控性，需要评估二次开发边界。
+- **任务核心**：去噪模型（如 NAFNet、SwinIR 等）在 BasicSR 生态中的训练、评测、推理与上线。  
+- **Agent 价值**：自动化数据构建、实验编排、结果采集、可视化对比、回归报警与发布。  
+- **系统目标**：形成“收数 → 训练 → 推理 → 回收指标”的闭环流水线。
 
 ---
 
-## 2. 主流框架实现差异（硬核对比）
+## 1. 基础定义：你真正要做的是“图像复原 MLOps + Agent 自动化”
 
-| 框架/平台 | 编排抽象 | 长任务恢复 | 多 Agent 协同 | HITL | 典型优势 | 典型短板 | 适配阶段 |
-|---|---|---|---|---|---|---|---|
-| OpenAI Agents | 工具+节点化工作流/SDK | 中（依赖实现） | 中 | 有 guardrails/评测链路 | 官方能力集成度高（工具、评测、追踪） | 对自托管/异构基础设施控制有限 | PoC→中规模 |
-| LangGraph | 显式状态图 | 强（durable execution） | 中-强 | 强（interrupt/human-in-loop） | 长链路可恢复、状态可追踪 | 对工程建模能力要求高 | 中-大规模生产 |
-| AutoGen (Core/AgentChat) | 事件驱动 + 会话抽象 | 中-强 | 强 | 可扩展 | 多 Agent 协作模型成熟、扩展面宽 | 系统复杂度上升快 | 研究/复杂协作 |
-| CrewAI | Agent/Task/Flow | 中 | 中 | 有回调与流程钩子 | 业务流程化快、文档友好 | 超复杂场景下可控性逊于低层框架 | 业务自动化落地 |
-| Semantic Kernel Agent | Agent + Orchestration 包 | 中 | 中-强 | 支持人机协作 | 企业集成友好（.NET/Java/Python） | 社区生态在 Agent 侧不如 LangChain 系 | 企业系统集成 |
-| OpenHands | SDK/CLI/GUI（偏软件开发） | 中 | 中 | 有 | 代码智能体落地路径清晰 | 场景偏 SWE，不是通用编排内核 | AI 开发自动化 |
-| MetaGPT | 角色化多 Agent SOP | 中 | 强 | 有 | “软件公司流程”抽象鲜明 | 泛化到非软件流程需再设计 | 研发流程自动化 |
-| AutoGPT Platform | 可视化块与连续代理 | 中 | 中 | 有监控 | 快速搭建与运维入口 | 平台化约束 + 部分许可策略需评估 | 快速上线/运营 |
+### 1.1 BasicSR 在栈里的位置
 
-> 结论：若你追求“可恢复 + 可观测 + 可审计”，图/事件驱动编排（LangGraph/AutoGen Core）通常比纯 prompt-loop 更可靠。
+BasicSR 官方定位是基于 PyTorch 的图像/视频复原工具箱，覆盖超分、去噪、去模糊、JPEG 伪影去除等任务。它提供了训练/测试/推理脚手架与配置化工作流。
 
----
+这意味着：
+- **模型训练与评测**应以 BasicSR 配置/脚本为核心；
+- Agent 不应替代训练框架，而是负责流程自动化、调度和实验治理。
 
-## 3. AI 网络自动化的执行层：浏览器与动作执行
+### 1.2 “AI Agent 技术路径”在本任务中的正确含义
 
-“网络自动化”本质是**不稳定环境下的动作执行问题**（DOM 变化、反爬、登录态、异步弹窗、验证码等）。
+对于 BasicSR 去噪任务，Agent 的三条主要路径是：
 
-### 3.1 Browser-native 执行
-
-- **Playwright**：现代浏览器自动化事实标准之一，跨 Chromium/WebKit/Firefox，支持并行与 CI。  
-- **browser-use**：将浏览器动作包装成 AI 可调用能力，降低“让模型操作网页”的接入成本。
-
-工程建议：
-- 生产场景优先保留“可重放脚本 + agent 决策日志”；
-- 将“执行器”与“策略器（LLM）”解耦，避免每次页面波动都要改 prompt。
-
-### 3.2 任务分层
-
-推荐三层：
-1. **Planner**（任务分解与重规划）；
-2. **Executor**（Playwright/browser-use/API 工具）；
-3. **Verifier**（规则校验 + 失败回滚 + 人工兜底）。
+1. **实验编排型 Agent**：自动改 YAML、提交训练、汇总 PSNR/SSIM、追踪最优 checkpoint。  
+2. **数据管道型 Agent**：自动收集噪声样本、合成退化、数据质检、构建 train/val/test。  
+3. **部署运维型 Agent**：自动打包推理服务、灰度发布、线上质量回流。
 
 ---
 
-## 4. 训练与推理：从“能跑”到“跑得动”
+## 2. 与上一篇框架的关系（按 BasicSR 场景重映射）
 
-### 4.1 训练栈
+| 层级 | 在 BasicSR 去噪里的职责 | 推荐技术 |
+|---|---|---|
+| 产品入口层 | 人机协作与任务下发（例如“开一组 ablation”） | Claude Code / OpenCode |
+| 运行平台层 | 会话、消息、计划任务、跨渠道触发 | OpenClaw |
+| 编排层 | 训练流程状态机（数据准备→训练→评估→导出） | LangGraph / AutoGen / CrewAI |
+| 执行层 | Shell、Python、GPU 作业、文件系统操作 | 本地执行器 + 调度器 |
+| 模型训练层 | 去噪网络训练与验证 | BasicSR（+ NAFNet/SwinIR 等） |
+| 推理服务层 | 批处理推理/在线推理/加速部署 | BasicSR inference + ONNX/TensorRT/NCNN（按需） |
+| 评测与收数层 | PSNR/SSIM/LPIPS、案例集对比、坏例回收 | 指标脚本 + 数据仓库 |
 
-- **TRL**：覆盖 SFT、DPO、GRPO、Reward Modeling 等常用后训练方法，并与 Transformers 生态深度集成。  
-- **OpenRLHF**：强调 Ray + vLLM 的分布式架构，以及 agent-based 训练范式，适合高吞吐 RLHF 生产训练。
-
-### 4.2 推理栈
-
-- **vLLM**：以 PagedAttention、连续批处理、OpenAI 兼容 API 等能力，构建高吞吐低延迟推理服务。
-
-### 4.3 强化学习/环境交互栈
-
-- **RLlib**：在多智能体、离线 RL、大规模分布式训练方面成熟，适合“环境交互数据持续回流”的策略优化场景。
-
----
-
-## 5. 收数（Data Collection）路线：可用性比“爬得多”更重要
-
-### 5.1 云端 Actor 化采集
-
-- **Apify Actors**：任务输入输出结构化、调度完善、可组合，适合“稳定运营型采集”。
-
-### 5.2 LLM 友好文本抽取
-
-- **Crawl4AI**：强调 LLM-friendly 输出（Markdown/结构化抽取），适合知识入库与 RAG 前处理。
-
-### 5.3 关键工程原则
-
-- 收数链路要有**版本化 schema**；
-- 将“提取逻辑”与“模型推理”分离；
-- 保留原始页面快照 + 结构化结果双轨存档，方便回溯与重算。
+关键点：
+- **BasicSR 是主训练框架**；
+- Agent 框架是“外层自动化与治理系统”。
 
 ---
 
-## 6. 面向“训练-推理-收数”一体化的推荐方案
+## 3. BasicSR 任务里的“收数”到底收什么
 
-### 方案 1（稳健生产）：LangGraph + Playwright + Apify/Crawl4AI + vLLM + TRL
+不是网页文本抓取，而是**图像训练数据与评测证据链**：
 
-- 编排：LangGraph（状态持久化 + HITL）
-- 执行：Playwright（确定性动作）
-- 收数：Apify（运营稳定）+ Crawl4AI（LLM 友好抽取）
-- 推理：vLLM
-- 训练：TRL
+1. 原始图像与清晰 GT（或近似 GT）
+2. 噪声模型参数（ISO、read noise、shot noise、压缩质量）
+3. 合成退化脚本版本
+4. 切 patch 与数据增强策略
+5. 训练日志、checkpoint、指标曲线
+6. 可视化样例（同一输入下不同模型输出）
 
-适合：强调可靠性、审计和成本控制的团队。
-
-### 方案 2（多智能体研究）：AutoGen Core + browser-use + OpenRLHF + vLLM
-
-- 编排：AutoGen Core（事件驱动多 Agent）
-- 执行：browser-use（快速接入网页动作）
-- 推理：vLLM
-- 训练：OpenRLHF（Ray + vLLM）
-
-适合：探索复杂协同策略与高吞吐 RLHF 的团队。
-
-### 方案 3（快速业务落地）：CrewAI + Playwright + 托管模型 API + Apify
-
-- 编排：CrewAI（流程化、上手快）
-- 执行：Playwright
-- 模型：托管 API（降低运维成本）
-- 收数：Apify
-
-适合：资源有限、要求尽快上线可用系统的团队。
+建议：
+- 数据与实验要**版本化**（dataset version + config hash + git commit）；
+- 每次上线模型必须绑定“可回放实验记录”。
 
 ---
 
-## 7. 最终选型建议（按优先级）
+## 4. 基于 BasicSR 的可落地自动化流水线
 
-### 如果你的目标是：AI 网络自动化训练 + 推理 + 收数（长期演进）
+### 4.1 训练流水线（Agent 编排）
 
-**推荐优先级：**
-1. **LangGraph + vLLM + TRL + Playwright + Apify/Crawl4AI**（首选，平衡可靠性与可扩展）
-2. **AutoGen Core + OpenRLHF + vLLM + browser-use**（适合偏研究与复杂协同）
-3. **CrewAI + 托管推理 API + Playwright + Apify**（MVP 快速落地）
+1. Agent 读取任务模板（如 `denoise_sidd_baseline`）  
+2. 生成/修改 BasicSR 配置（batch size、lr、patch size、ema、resume）  
+3. 启动分布式训练（DDP）  
+4. 周期评测（PSNR/SSIM）并自动保存 best/last checkpoint  
+5. 产出实验报告（表格+样例图）
 
-### 选型红线（强烈建议）
+### 4.2 推理流水线（Agent 编排）
 
-- 不要把“编排状态”藏在 prompt 里；
-- 不要把“收数逻辑”和“模型策略”耦合在同一个 agent；
-- 不要在缺少 tracing/评测的前提下直接扩大并发；
-- 所有关键动作必须有可重放证据链（输入、决策、工具调用、输出）。
+1. 读取待处理图像队列  
+2. 调用 `inference_*.py` 或封装 API  
+3. 计算离线质量指标（有 GT 时）  
+4. 将结果入库并触发回归检测
+
+### 4.3 回归与告警
+
+- 设定阈值：如平均 PSNR 下降 >0.15 dB 报警；
+- 坏例 Top-K 自动归档并通知；
+- 新模型未通过回归时禁止发布。
 
 ---
 
-## 参考资料（按文中使用顺序）
+## 5. 技术选型：面向 BasicSR 去噪任务的推荐
 
-1. OpenAI Agents Guide: https://developers.openai.com/api/docs/guides/agents  
-2. LangGraph Overview: https://docs.langchain.com/oss/python/langgraph/overview  
-3. Microsoft AutoGen Docs: https://microsoft.github.io/autogen/stable/  
-4. CrewAI Docs: https://docs.crewai.com/  
-5. LlamaIndex Agent Docs: https://developers.llamaindex.ai/python/framework/understanding/agent/  
-6. Haystack Agents Docs: https://docs.haystack.deepset.ai/docs/agents  
-7. Semantic Kernel Agent Framework: https://learn.microsoft.com/en-us/semantic-kernel/frameworks/agent/  
-8. Playwright Intro: https://playwright.dev/docs/intro  
-9. browser-use Docs: https://docs.browser-use.com/introduction  
-10. vLLM Docs: https://docs.vllm.ai/en/latest/  
-11. Ray RLlib Docs: https://docs.ray.io/en/latest/rllib/index.html  
-12. TRL Docs: https://huggingface.co/docs/trl/index  
-13. OpenRLHF Docs: https://openrlhf.readthedocs.io/en/latest/  
-14. Apify Actors Docs: https://docs.apify.com/platform/actors  
-15. Crawl4AI Docs: https://docs.crawl4ai.com/  
-16. OpenHands Repository: https://github.com/OpenHands/OpenHands  
-17. MetaGPT Repository: https://github.com/FoundationAgents/MetaGPT  
-18. AutoGPT Repository: https://github.com/Significant-Gravitas/AutoGPT
+### 方案 A（首选，稳态生产）
 
-> 注：本文聚焦工程实现路径与系统集成，不对“单项 benchmark 分数”做横向排名。实际选型应结合团队语言栈、预算、SLA、合规要求与运维能力。
+- 训练/推理核心：**BasicSR**
+- 编排：**LangGraph**（或轻量 Airflow/Prefect）
+- 平台：**OpenClaw**（消息触发、定时任务、远程运维）
+- 开发入口：Claude Code / OpenCode
+
+适合：长期迭代的去噪项目。
+
+### 方案 B（快速起步）
+
+- 核心：BasicSR + 单机脚本
+- 编排：轻量 Agent（只做参数扫描、日志汇总）
+- 平台：可先不引入中台
+
+适合：先把第一版基线跑通。
+
+### 方案 C（多团队协作）
+
+- 核心：BasicSR + 实验平台（MLflow/W&B）
+- 编排：AutoGen/CrewAI 做“多角色流程”（数据、训练、评测、发布）
+- 平台：OpenClaw 做通知/审批/调度
+
+适合：工程团队分工明确、追求流程化治理。
+
+---
+
+## 6. 和 LLM 训练栈的边界（避免再次混淆）
+
+- TRL / OpenRLHF / vLLM 主要是**大模型后训练与推理服务**；
+- BasicSR 去噪任务一般不需要这套作为主干；
+- 只有在你要做“视觉-语言联合系统”或“用 LLM 做策略控制”时，才需要把两套栈桥接。
+
+一句话：
+**你的主战场是 BasicSR 视觉复原栈，Agent 是上层自动化控制面，不是替代训练框架。**
+
+---
+
+## 7. 最终建议（针对你这次需求）
+
+1. 立即把“网络训推”术语在文内统一改为：`BasicSR 图像去噪训练/推理`。  
+2. 删除或降级 LLM 训练栈篇幅，避免读者误解。  
+3. 补充“数据版本 + 配置版本 + 指标回归”的工程规范。  
+4. 给出一份可执行 baseline：`SIDD + NAFNet + BasicSR + Agent 自动实验调参`。
+
+---
+
+## 参考资料
+
+1. BasicSR 仓库（官方定位与任务范围）：https://github.com/XPixelGroup/BasicSR  
+2. BasicSR HOWTOs（训练/推理示例）：https://github.com/XPixelGroup/BasicSR/blob/master/docs/HOWTOs.md  
+3. NAFNet（基于 BasicSR 的图像复原实现与结果）：https://github.com/megvii-research/NAFNet  
+4. Real-ESRGAN（明确说明训练与推理依赖 BasicSR）：https://github.com/xinntao/Real-ESRGAN  
+5. OpenClaw 文档（Agent 运行与路由平台能力）：https://docs.openclaw.ai  
+6. Claude Code 文档（编码 Agent 产品层）：https://code.claude.com/docs/en/overview  
+7. OpenCode 文档（开源编码 Agent 产品层）：https://opencode.ai/docs
+
+> 修订说明：本文已按“BasicSR 去噪任务”重新定义“训推”语义，并据此调整技术路线与推荐方案。
